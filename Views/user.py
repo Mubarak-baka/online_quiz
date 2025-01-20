@@ -2,8 +2,11 @@ from flask import jsonify, request, Blueprint
 from models import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import jwt_required, get_jwt_identity
-user_bp = Blueprint("user_bp", __name__)
+from flask_mail import Message
 
+from app import *
+
+user_bp = Blueprint("user_bp", __name__)
 @user_bp.route("/users", methods=['GET'])
 def get_user():
     users = User.query.all()
@@ -27,29 +30,43 @@ def get_user():
     
 @user_bp.route("/users",methods=["POST"])
 def add_users():
-        data=request.get_json()
-        username=data.get('username')
-        email=data.get('email')
-        role=data.get('role')
-        grade=data.get("grade")
-        password=data.get('password')
-    
-        check_username = User.query.filter_by(username=username).first()
-        check_email = User.query.filter_by(email=email).first()
+    from app import mail
+    data = request.get_json()
+    username = data.get("username")
+    email = data.get("email")
+    role = data.get("role")
+    grade = data.get("grade")
+    password = data.get("password")
 
-        if check_username or check_email:
-         return jsonify({"error": "Username and Email already exist"}), 400
+    # Check for existing username or email
+    check_username = User.query.filter_by(username=username).first()
+    check_email = User.query.filter_by(email=email).first()
+    if check_username or check_email:
+        return jsonify({"error": "Username or Email already exists"}), 400
 
-        new_user=User(
-           username=username,
-           email=email,
-           role=role,
-           grade=grade,
-           password=generate_password_hash(password)
+    # Add new user to the database
+    new_user = User(
+        username=username,
+        email=email,
+        role=role,
+        grade=grade,
+        password=generate_password_hash(password)
+    )
+    db.session.add(new_user)
+    db.session.commit()
+
+    # Send Welcome Email
+    try:
+        msg = Message(
+            subject="Welcome to Todo App",
+            recipients=["faith.nguli@student.moringaschool.com"],
+            body="confirm if you got the email by sending the word penzi to 224055",
         )
-        db.session.add(new_user) 
-        db.session.commit()
-        return jsonify({"message": "User created successfully"}), 201
+      
+        mail.send(msg)
+        return jsonify({"success": "User created and email sent successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": f"Failed to send email: {str(e)}"}), 500
 
 @user_bp.route("/user", methods=["PATCH"])
 @jwt_required()
