@@ -8,15 +8,18 @@ export const UserProvider = ({children}) =>
 {
     const navigate = useNavigate()
     const [authToken , setAuthToken] = useState( ()=> sessionStorage.getItem("token")  )
+    
+    
     const [current_user, setCurrentUser] = useState(null)
-    const addUser = (username,email,password,grade,role) => {
+    console.log("auth", current_user)
+    const addUser = (username,email,password,role) => {
         toast.loading("...Adding User")
         fetch ("http://127.0.0.1:5000/users",{
             method: "POST",
             headers: {
             "Content-Type":"application/json",
             },
-            body:JSON.stringify({username,email,password,grade,role})
+            body:JSON.stringify({username,email,password,role})
             
         })
         .then((resp)=>resp.json())
@@ -94,18 +97,41 @@ const login = (email, password) =>
             
         })
     };
-    const logout = async () => 
+    const logout = () => 
         {
-            sessionStorage.removeItem("token");
-            setAuthToken(null)
-            setCurrentUser(null)
+            
+            toast.loading("Logging out ... ")
+            fetch("http://127.0.0.1:5000/logout",{
+                method:"DELETE",
+                headers: {
+                    'Content-type': 'application/json',
+                    Authorization: `Bearer ${authToken}`
+                  },
+           
+            })
+            .then((resp)=>resp.json())
+            .then((response)=>{
+               console.log(response);
+               
+                if(response.success)
+                {
+                    sessionStorage.removeItem("token");
+                    setAuthToken(null)
+                    setCurrentUser(null)
+    
+                    toast.dismiss()
+                    toast.success("Successfully Logged out")
+    
+                    navigate("/login")
+                }
+            })
     
         };
-
         useEffect(()=>{
             fetchCurrentUser()
         }, [])
         const fetchCurrentUser = () => 
+            
         {
             console.log("Current user fcn ",authToken);
             
@@ -117,10 +143,13 @@ const login = (email, password) =>
                 }
             })
             .then((response) => response.json())
+            
             .then((response) => {
               if(response.email){
                setCurrentUser(response)
+               console.log("current_user", response)
               }
+
             });
         };
     
@@ -140,7 +169,7 @@ const login = (email, password) =>
     const data = {
         login,
         logout,
-        fetchCurrentUser,
+        current_user,
         getUsers,
         DeleteUser,
         UpdateUser,

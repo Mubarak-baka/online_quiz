@@ -6,8 +6,8 @@ export default function Register() {
   const { addUser } = useContext(UserContext);
 
   const [username, setUsername] = useState('');
-  const [grade, setGrade] = useState('');
-  const [role, setRole] = useState('USER');
+
+  const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(''); // State for displaying messages
@@ -16,7 +16,7 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Pass all necessary data to addUser
-    addUser(username, email, password, grade, role)
+    addUser(username, email, password,  role)
       .then(() => {
         setMessage('User registered successfully!');
       })
@@ -26,7 +26,7 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form className="form" onSubmit={handleSubmit}>
         <p className="title">Register</p>
         <p className="message">Signup now and get full access to our app.</p>
@@ -45,18 +45,7 @@ export default function Register() {
             <span>Username</span>
           </label>
         </div>
-        <label>
-          <input
-            className="input"
-            type="number"
-            placeholder="Enter your grade"
-            name="grade"
-            value={grade}
-            onChange={(e) => setGrade(e.target.value)}
-            required
-          />
-          <span>Grade</span>
-        </label>
+       
         <label>
           <input
             className="input"
@@ -87,7 +76,7 @@ export default function Register() {
             type="text"
             placeholder="Enter your role"
             name="role"
-            value="USER"
+            value={role}
             onChange={(e) => setRole(e.target.value)}
             required
           />
