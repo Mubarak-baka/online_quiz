@@ -25,6 +25,12 @@ const QuizQuestions = () => {
             try {
                 const fetchedQuestions = await getQuestions(quizId);
                 setQuestions(fetchedQuestions);
+                // Initialize answers object with empty strings for each question
+                const initialAnswers = fetchedQuestions.reduce((acc, q) => ({
+                    ...acc,
+                    [q.question_id]: ''
+                }), {});
+                setAnswers(initialAnswers);
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching questions:", error);
@@ -44,11 +50,18 @@ const QuizQuestions = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Validate that all questions have been answered
+        const unansweredQuestions = questions.filter(q => !answers[q.question_id]?.trim());
+        if (unansweredQuestions.length > 0) {
+            toast.warning(`Please answer all questions before submitting.`);
+            return;
+        }
 
         try {
             const token = sessionStorage.getItem('token');
             const response = await axios.post(
-                `http://127.0.0.1:5000/quizzes/${quizId}/attempt`,
+                `https://online-quiz-4.onrender.com/${quizId}/attempt`,
                 answers,
                 {
                     headers: {
@@ -65,6 +78,13 @@ const QuizQuestions = () => {
     };
 
     const nextQuestion = () => {
+        // Only proceed if current question is answered
+        const currentQuestionId = questions[currentQuestion].question_id;
+        if (!answers[currentQuestionId]?.trim()) {
+            toast.warning("Please answer the current question before proceeding.");
+            return;
+        }
+
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(prev => prev + 1);
         }
@@ -79,9 +99,9 @@ const QuizQuestions = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="flex items-center space-x-2 text-blue-600">
-                    <Loader2 className="w-6 h-6 animate-spin" />
-                    <span className="text-lg font-medium">Loading questions...</span>
+                <div className="flex items-center space-x-2">
+                    <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                    <span className="text-lg font-medium text-gray-700">Loading questions...</span>
                 </div>
             </div>
         );
@@ -90,10 +110,10 @@ const QuizQuestions = () => {
     if (questions.length === 0) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center p-8 bg-white rounded-lg shadow-lg">
-                    <Brain className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-800">No questions available</h3>
-                    <p className="text-gray-600 mt-2">This quiz doesn't have any questions yet.</p>
+                <div className="text-center">
+                    <Brain className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900">No questions found</h3>
+                    <p className="text-gray-500">This quiz doesn't have any questions yet.</p>
                 </div>
             </div>
         );
@@ -102,18 +122,10 @@ const QuizQuestions = () => {
     if (score !== null) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-                    <div className="text-center">
-                        <Award className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
-                        <h2 className="text-2xl font-bold text-gray-800 mb-2">Quiz Complete!</h2>
-                        <div className="bg-blue-50 p-4 rounded-lg">
-                            <p className="text-lg text-blue-800">Your Score</p>
-                            <p className="text-4xl font-bold text-blue-600">{score}%</p>
-                        </div>
-                        <p className="mt-4 text-gray-600">
-                            Thank you for completing the quiz. Keep learning and improving!
-                        </p>
-                    </div>
+                <div className="text-center">
+                    <Award className="w-16 h-16 text-green-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-gray-900">Quiz Completed!</h3>
+                    <p className="text-lg text-gray-600 mt-2">Your score: {score}</p>
                 </div>
             </div>
         );
@@ -203,7 +215,7 @@ const QuizQuestions = () => {
                             className={`w-2 h-2 rounded-full ${
                                 index === currentQuestion
                                     ? 'bg-blue-600'
-                                    : index < currentQuestion
+                                    : answers[questions[index].question_id]?.trim()
                                     ? 'bg-blue-300'
                                     : 'bg-gray-300'
                             }`}

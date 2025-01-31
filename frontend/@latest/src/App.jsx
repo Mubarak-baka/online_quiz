@@ -14,7 +14,7 @@ import { ToastContainer } from "react-toastify";
 import {QuestionProvider} from '../context/Questioncontext'
 import QuizQuestions from "./Components/Quizquestions";
 import ViewResults from "./Components/ViewResults";
-
+import Footer from "./Components/Footer";
 import './App.css';
 
 import Readquiz from "./Components/readquiz"
@@ -37,7 +37,7 @@ function App() {
             <Route path="Register" element={<Register />} />
             <Route path="*" element={<NoPage />} />
           </Routes>
-          
+          <Footer />
         </QuestionProvider>
       </QuizProvider>
     </UserProvider>

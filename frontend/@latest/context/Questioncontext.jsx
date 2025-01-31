@@ -27,7 +27,7 @@ const QuestionProvider = ({ children }) => {
             console.log("Sending question data:", { quizId, questionText, correctAnswer });
             console.log("authToken:", authToken);
 
-            const response = await fetch(`http://127.0.0.1:5000/quizzes/${quizId}/questions`, {
+            const response = await fetch(`https://online-quiz-4.onrender.com/${quizId}/questions`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const QuestionProvider = ({ children }) => {
         }
     
         try {
-            const response = await fetch(`http://127.0.0.1:5000/quizzes/${quizId}/questions`, {
+            const response = await fetch(`https://online-quiz-4.onrender.com/${quizId}/questions`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${authToken}`,
