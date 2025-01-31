@@ -9,6 +9,7 @@ flask-jwt-extended = "*"
 flask = "*"
 mail = "*"
 flask-mail = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 

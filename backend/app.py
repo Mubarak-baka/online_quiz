@@ -9,7 +9,7 @@ from datetime import timedelta
 from Views import *
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://quizdb_nlhu_user:H4afQ6D4F3Q1Z89vdq4EpfNlMZecWJFk@dpg-cue5hclds78s73a7bkkg-a.oregon-postgres.render.com/quizdb_nlhu"  
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
