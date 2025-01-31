@@ -93,3 +93,4 @@ def delete_attempt(attempt_id):
     db.session.delete(attempt)
     db.session.commit()
     return jsonify({'message': 'Attempt deleted successfully!'}), 200
+#testing purposes
