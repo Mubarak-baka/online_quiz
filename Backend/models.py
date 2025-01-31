@@ -10,7 +10,7 @@ class User(db.Model):
     username = db.Column(db.String(128), nullable=False, unique=True)
     email = db.Column(db.String(128), nullable=False, unique=True)
     role = db.Column(db.String(64), nullable=False)
-    password = db.Column(db.String(128), nullable=False)
+    password = db.Column(db.String(512), nullable=False)
     
     attempts = db.relationship('QuizAttempt', backref='user', lazy=True)
 
