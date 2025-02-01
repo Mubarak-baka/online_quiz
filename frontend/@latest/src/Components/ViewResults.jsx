@@ -11,7 +11,7 @@ const QuizResults = () => {
         const fetchResults = async () => {
             try {
                 const token = sessionStorage.getItem("token");
-                const response = await axios.get("https://online-quiz-4.onrender.com/results", {
+                const response = await axios.get("http://127.0.0.1:5000/results", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 console.log("API Response:", response.data);

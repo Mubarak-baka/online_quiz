@@ -14,7 +14,7 @@ export const UserProvider = ({children}) =>
     console.log("auth", current_user)
     const addUser = (username,email,password,role) => {
         toast.loading("...Adding User")
-        fetch ("https://online-quiz-4.onrender.com/users",{
+        fetch ("http://127.0.0.1:5000/users",{
             method: "POST",
             headers: {
             "Content-Type":"application/json",
@@ -48,7 +48,7 @@ export const UserProvider = ({children}) =>
 const login = (email, password) => 
     {
         toast.loading("Logging you in ... ")
-        fetch("https://online-quiz-4.onrender.com/login",{
+        fetch("http://127.0.0.1:5000/login",{
             method:"POST",
             headers: {
                 'Content-type': 'application/json',
@@ -66,7 +66,7 @@ const login = (email, password) =>
 
                 setAuthToken(response.access_token)
 
-                fetch('https://online-quiz-4.onrender.com/current_user',{
+                fetch('http://127.0.0.1:5000/current_user',{
                     method:"GET",
                     headers: {
                         'Content-type': 'application/json',
@@ -101,7 +101,7 @@ const login = (email, password) =>
         {
             
             toast.loading("Logging out ... ")
-            fetch("https://online-quiz-4.onrender.com/logout",{
+            fetch("http://127.0.0.1:5000/logout",{
                 method:"DELETE",
                 headers: {
                     'Content-type': 'application/json',
@@ -135,7 +135,7 @@ const login = (email, password) =>
         {
             console.log("Current user fcn ",authToken);
             
-            fetch('https://online-quiz-4.onrender.com/current_user',{
+            fetch('http://127.0.0.1:5000/current_user',{
                 method:"GET",
                 headers: {
                     'Content-type': 'application/json',

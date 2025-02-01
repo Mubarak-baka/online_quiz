@@ -23,7 +23,7 @@ export const QuizProvider = ({ children }) => {
     const fetchQuizzes = async () => {
         setLoading(true);
         try {
-            const response = await fetch("https://online-quiz-4.onrender.com/quizzes", {
+            const response = await fetch("http://127.0.0.1:5000/quizzes", {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${authToken}`, // Use the token for protected route
@@ -53,7 +53,7 @@ export const QuizProvider = ({ children }) => {
         toast.loading("...Adding Quiz");
 
         try {
-            const response = await fetch("https://online-quiz-4.onrender.com/quizzes", {
+            const response = await fetch("http://127.0.0.1:5000/quizzes", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
