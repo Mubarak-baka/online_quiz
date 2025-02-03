@@ -19,6 +19,7 @@ const AddQuiz = () => {
         }
         addQuiz(title, totalTime, totalQuestions);
         toast.success("Quiz added successfully!");
+        navigate("/readquiz");
     };
 
     return (

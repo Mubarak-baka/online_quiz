@@ -1,174 +1,99 @@
-# Books Management API
+# Online_Quiz App
 
-This API allows users to manage books, including adding, updating, deleting, and retrieving books associated with their accounts. JWT-based authentication ensures that users can only access and manipulate their own data.
 
----
+
+## Overview
+The Quiz API allows users to register, log in, create and attempt quizzes, and view results. This API is built with Flask and utilizes JWT for authentication.
+
+## Errors encountered 
+Due to how the render delays when loading when an admin tries to add a quiz and  fetch it responds with an error but after refreshing the page everything goes well 
+And also When fetching the quiz .. after i deployed it takes a great amount of time when loading ...although in the video i demonstrated that it worked successfully
 
 ## Features
-
-- **Add Books**: Users can add books with attributes like title, genre, and borrowing/returning dates.
-- **Retrieve Books**: Fetch all books for the authenticated user or retrieve a specific book by its ID.
-- **Update Books**: Modify details of a book.
-- **Delete Books**: Remove a book from the database.
-- **JWT Authentication**: Ensures secure and personalized access for users.
-
----
+- User authentication (registration, login, logout)
+- Create and fetch quizzes
+- Attempt quizzes
+- Retrieve quiz results
 
 ## Installation
+Ensure you have Python 3.8 installed. Then, install the required dependencies:
 
-1. Clone the repository:
-
-   ```bash
-   git clone <repository_url>
-   cd <repository_directory>
-   ```
-
-2. Install dependencies using `pipenv`:
-
-   ```bash
-   pipenv install
-   ```
-
-3. Activate the environment:
-
-   ```bash
-   pipenv shell
-   ```
-
-4. Set up the database:
-
-   Open a Python shell and run the following commands:
-
-   ```python
-   from app import db
-   db.create_all()
-   ```
-
----
-
-## Environment Variables
-
-Create a `.env` file in the root of your project and add the following:
-
-```env
-FLASK_APP=app.py
-FLASK_ENV=development
-SECRET_KEY=your_secret_key
-JWT_SECRET_KEY=your_jwt_secret_key
+```sh
+pip install -r requirements.txt
 ```
 
----
+### Required Packages
+```
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
 
-## Running the Application
+[packages]
+flask-migrate = "*"
+flask-jwt-extended = "*"
+flask = "*"
+mail = "*"
+flask-mail = "*"
+psycopg2-binary = "*"
 
-Start the Flask development server:
+[dev-packages]
 
-```bash
-flask run
+[requires]
+python_version = "3.8"
 ```
 
----
+## API Endpoints
 
-## Endpoints
+### Users
+- `GET /current_user` - Get details of the logged-in user
+- `GET /Get_all_users` - Retrieve all users
+- `GET /login` - User login
+- `GET /logout` - User logout
 
-### Authentication
+### Quiz
+- `GET /read_all_quize` - Retrieve all quizzes
+- `GET /read_quiz_id` - Retrieve quiz by ID
+- `GET /Add Quiz` - Create a new quiz
 
-1. **Login**
-   - **POST** `/auth/login`
-   - Request body:
+### Attempt
+- `GET /Attempt` - Start a new quiz attempt
+- `GET /get_current_attempt` - Retrieve the current attempt
+- `GET /get_all_attempts` - Retrieve all quiz attempts
 
-     ```json
-     {
-       "email": "user@example.com",
-       "password": "password123"
-     }
-     ```
+### Question
+- `GET /Adding a Question` - Add a new question to a quiz
+- `GET /reading_a_question` - Retrieve a question
 
-2. **Register**
-   - **POST** `/auth/register`
-   - Request body:
+### Results
+- `GET /results` - Retrieve quiz results
 
-     ```json
-     {
-       "email": "user@example.com",
-       "password": "password123"
-     }
-     ```
+## User Stories
+1. As a user, you can  register and log in to the system so that you can access quizzes.
+2. As a user, you  can view all available quizzes.
+3. As a user, you can to attempt a quiz and submit my answers.
+4. As a user, you  can view my quiz results after completing an attempt.
+5. as a Admin you can add a quiz and  question
+6. as an admin you can view all the results for all users 
 
----
 
-### Books Management
+## Errors encountered 
+Due to how the render delays when loading when an admin tries to add a quiz and  fetch it responds with an error but after refreshing the page everything goes well 
 
-1. **Add a Book**
-   - **POST** `/books`
-   - Request body:
 
-     ```json
-     {
-       "Title": "Book Title",
-       "Genre": "Fiction",
-       "borrowed_at": "2025-01-01",
-       "returned_at": "2025-01-15"
-     }
-     ```
+## Links
+- **Video Demonstration:** [Watch Here](https://www.veed.io/view/f7a09c82-4a39-41c9-8339-4270c11c0301?panel=share)
+- **Postman Endpoints:** is included in the repository 
+- **Frontend (Netlify):** [Quiz App](https://679d14b0f3ac3800bcb769fc--fanciful-sopapillas-1be567.netlify.app/)
+- **Backend (Render):** [(https://online-quiz-4.onrender.com/)
 
-2. **Get All Books**
-   - **GET** `/books`
-
-3. **Get a Specific Book**
-   - **GET** `/books/<book_id>`
-
-4. **Update a Book**
-   - **PATCH** `/books/<book_id>`
-   - Request body:
-
-     ```json
-     {
-       "Title": "Updated Title",
-       "Genre": "Updated Genre",
-       "borrowed_at": "2025-01-02",
-       "returned_at": "2025-01-16"
-     }
-     ```
-
-5. **Delete a Book**
-   - **DELETE** `/books/<book_id>`
-
----
-
-## Error Handling
-
-The API returns appropriate error messages and HTTP status codes for invalid requests, including:
-
-- Unauthorized access (401)
-- Book not found (404)
-- Validation errors (400)
-
----
-
-## Dependencies
-
-- Flask
-- Flask-JWT-Extended
-- Flask-SQLAlchemy
-- pipenv
-
-Install them using:
-
-```bash
-pipenv install flask flask-jwt-extended flask-sqlalchemy
-```
-
----
-
-## Contributing
-
-Contributions are welcome! Fork the repository, make changes, and submit a pull request.
-
----
+## Contribution
+If you'd like to contribute:
+1. Fork the repository.
+2. Clone your forked repository.
+3. Create a new branch.
+4. Make your changes.
+5. Submit a pull request.
 
 ## License
-
 This project is licensed under the MIT License.
-
-{*https://www.veed.io/view/f7a09c82-4a39-41c9-8339-4270c11c0301?panel=share*}
