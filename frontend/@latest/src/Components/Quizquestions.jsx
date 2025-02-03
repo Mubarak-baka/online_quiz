@@ -61,7 +61,7 @@ const QuizQuestions = () => {
         try {
             const token = sessionStorage.getItem('token');
             const response = await axios.post(
-                `http://127.0.0.1:5000/quizzes/${quizId}/attempt`,
+                `https://online-quiz-4.onrender.com/quizzes/${quizId}/attempt`,
                 answers,
                 {
                     headers: {
